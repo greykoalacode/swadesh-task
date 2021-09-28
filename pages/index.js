@@ -1,8 +1,18 @@
 import Head from 'next/head'
+import { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import { server } from '../config';
 
-export default function Home({data}) {
+export default function Home() {
+  const [data,setData] = useState([]);
+  useEffect(() => {
+    async function callData(){
+      const res = await fetch(`${server}/api/basic`);
+      const data = await res.json();
+      setData(data);
+    }
+    callData();
+  },[])
   return (
     <div>
       <Head>
@@ -34,19 +44,19 @@ export default function Home({data}) {
   )
 }
 
-export async function getStaticProps(context){
-  const res = await fetch(`${server}/api/basic`);
-  const data = await res.json();
+// export async function getStaticProps(context){
+//   const res = await fetch(`${server}/api/basic`);
+//   const data = await res.json();
 
-  if (!data){
-    return {
-      notFound: true
-    }
-  }
+//   if (!data){
+//     return {
+//       notFound: true
+//     }
+//   }
 
-  return {
-    props: { 
-      data
-    }
-  }
-}
+//   return {
+//     props: { 
+//       data
+//     }
+//   }
+// }
